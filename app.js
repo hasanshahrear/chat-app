@@ -34,7 +34,7 @@ app.set("view engine", 'ejs')
 // set static folder
 app.use(expresss.static(path.join(__dirname, "public")))
 
-// parse cookies
+// parse cookies 
 app.use(cookieParser(process.env.COOKIE_SECRET))
 
 
