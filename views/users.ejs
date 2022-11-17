@@ -25,21 +25,49 @@
             </tr>
           </thead>
           <tbody id="users-table">
-            <tr id="">
-              <td class="name">
-                <img src="./images/user1.png" />
-                <span>User 1</span>
-              </td>
-              <td>email@email.com</td>
-              <td class="manage">
-                <img src="./images/trash.png" alt="Delete" />
-              </td>
-            </tr>
+            <% users.forEach(function(user){ %>
+              <tr id="<%= user._id %>">
+                <td class="name">
+                  <% if (user.avatar){ %>
+                    <img src="./uploads/avatars/<%= user.avatar %>" />
+                 <% } else { %>
+
+                  <img src="./images/user1.png" />
+                 <% } %>
+                  <span><%= user.name %></span>
+                </td>
+                <td><%= user.email %></td>
+                <td class="manage">
+                  <img src="./images/trash.png" alt="Delete" onClick="deleteUser('<%= user._id %>')" />
+                </td>
+              </tr>
+              <% }); %>
+            
           </tbody>
         </table>
       </div>
     </div>
 
     <%- include('./partials/add-user-modal.ejs') %>
+
+
+    <script>
+      async function deleteUser(userId){
+        let response = await fetch(`/users/${userId}`, {
+          method: "DELETE"
+        });
+        
+        let result = await response.json();
+
+        if(result.errors){
+            alert(result.erros);
+        }else{
+          document.getElementById(userId).remove()
+          alert(result.message);
+        }
+
+
+      }
+    </script>
   </body>
 </html>
